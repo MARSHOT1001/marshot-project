@@ -24,17 +24,26 @@ let videos = [
     id: 3,
   },
 ];
+
 export const marstube = (req, res) => {
   return res.render("marstube/home", { pageTitle: "MarsTube", videos });
 };
+
 export const watch = (req, res) => {
   const { id } = req.params;
   const video = videos[id - 1];
-  return res.render("marstube/watch", { pageTitle: `Watching ${video.title}` });
+  return res.render("marstube/watch", {
+    pageTitle: `Watching ${video.title}`,
+    video,
+  });
 };
+
 export const edit = (req, res) =>
   res.render("marstube/edit", { pageTitle: "Edit" });
+
 export const upload = (req, res) =>
   res.render("marstube/upload", { pageTitle: "Upload" });
+
 export const deleteVideo = (req, res) => res.send("Delete Video");
+
 export const search = (req, res) => res.send("Search Videos");
