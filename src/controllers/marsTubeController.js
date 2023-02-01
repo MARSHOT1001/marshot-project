@@ -29,11 +29,16 @@ export const postUpload = async (req, res) => {
   }
 };
 
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
   const { id } = req.params;
-  return res.render("marstube/watch", {
-    pageTitle: `Watching`,
-  });
+  const video = await Video.findById(id);
+  if (video) {
+    return res.render("marstube/watch", {
+      pageTitle: video.title,
+      video: video,
+    });
+  }
+  return res.render("marstube/404", { pageTitle: "Video not found" });
 };
 
 export const getEdit = (req, res) => {

@@ -11,6 +11,12 @@ html(lang="ko")
     body 
         header 
             h1=pageTitle
+            nav
+                ul 
+                    li 
+                        a(href="/marstube/upload") Upload Video
+                    li 
+                        a(href="/marstube") Home
         main
             block content
     include ../partials/footer.pug
