@@ -18,7 +18,7 @@ export const postUpload = async (req, res) => {
     await Video.create({
       title,
       description,
-      hashtags: hashtags.split(",").map((word) => `#${word}`),
+      hashtags: hashtags.split(" , ").map((word) => `#${word}`),
     });
     return res.redirect("/marstube");
   } catch (error) {
@@ -41,17 +41,34 @@ export const watch = async (req, res) => {
   });
 };
 
-export const getEdit = (req, res) => {
+export const getEdit = async (req, res) => {
   const { id } = req.params;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.render("marstube/404", {
+      pageTitle: `Video not found.`,
+    });
+  }
   return res.render("marstube/edit", {
-    pageTitle: `Editing`,
+    pageTitle: `Edit: ${video.title}`,
+    video,
   });
 };
 
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {
+  const { id } = req.params;
   const { title, description, hashtags } = req.body;
-  console.log(title, description, hashtags);
-  return res.redirect(`/marstube/edit`);
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.render("marstube/404", { pageTitle: "Video not found." });
+  }
+  await Video.findByIdAndUpdate(id, {
+    title,
+    description,
+    hashtags: hashtags.split(" , "),
+  });
+  await video.save();
+  return res.redirect(`/marstube/${id}`);
 };
 
 export const deleteVideo = (req, res) => res.send("Delete Video");
