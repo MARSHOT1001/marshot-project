@@ -1,4 +1,4 @@
-# MARSHOTPROJECT
+# MarshotProject
 
 [rootRouter]
 / => Freedom
