@@ -38,13 +38,20 @@ export const watch = (req, res) => {
   });
 };
 
-export const edit = (req, res) => {
+export const getEdit = (req, res) => {
   const { id } = req.params;
   const video = videos[id - 1];
   return res.render("marstube/edit", {
     pageTitle: `Editing ${video.title}`,
     video,
   });
+};
+
+export const postEdit = (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  videos[id - 1].title = title;
+  return res.redirect(`/marstube/${id}`);
 };
 
 export const upload = (req, res) =>
