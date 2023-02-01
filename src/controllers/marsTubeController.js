@@ -32,13 +32,13 @@ export const postUpload = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id);
-  if (video) {
-    return res.render("marstube/watch", {
-      pageTitle: video.title,
-      video: video,
-    });
+  if (!video) {
+    return res.render("marstube/404", { pageTitle: "Video not found" });
   }
-  return res.render("marstube/404", { pageTitle: "Video not found" });
+  return res.render("marstube/watch", {
+    pageTitle: video.title,
+    video: video,
+  });
 };
 
 export const getEdit = (req, res) => {
