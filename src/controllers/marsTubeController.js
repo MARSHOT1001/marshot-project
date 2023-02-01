@@ -1,26 +1,56 @@
-import Video from "../models/Video";
+let videos = [
+  {
+    title: "First Video",
+    rating: 5,
+    comments: 2,
+    createdAt: "2 minutes ago",
+    views: 59,
+    id: 1,
+  },
+  {
+    title: "Second Video",
+    rating: 5,
+    comments: 2,
+    createdAt: "3 minutes ago",
+    views: 59,
+    id: 2,
+  },
+  {
+    title: "Third Video",
+    rating: 5,
+    comments: 2,
+    createdAt: "5 minutes ago",
+    views: 59,
+    id: 3,
+  },
+];
 
 export const marstube = (req, res) => {
-  Video.find({}, (error, videos) => {
-    console.log("errors", error);
-    console.log("videos", videos);
-  });
-  return res.render("marstube/home", { pageTitle: "MarsTube", videos: [] });
+  return res.render("marstube/home", { pageTitle: "MarsTube", videos });
 };
 
 export const watch = (req, res) => {
   const { id } = req.params;
+  const video = videos[id - 1];
   return res.render("marstube/watch", {
     pageTitle: `Watching`,
   });
 };
 
-export const getEdit = (req, res) =>
-  res.render("marstube/edit", {
-    pageTitle: `Editing`,
+export const getEdit = (req, res) => {
+  const { id } = req.params;
+  const video = videos[id - 1];
+  return res.render("marstube/edit", {
+    pageTitle: `Editing ${video.title}`,
+    video,
   });
-export const postUpload = (req, res) => {
-  res.send("/");
+};
+
+export const postEdit = (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  videos[id - 1].title = title;
+  return res.redirect(`/marstube/${id}`);
 };
 export const upload = (req, res) =>
   res.render("marstube/upload", { pageTitle: "Upload" });
