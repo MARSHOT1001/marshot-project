@@ -27,3 +27,7 @@
 /marstube/:id/edit => Edit Video
 /marstube/:id/delete => Delte Video
 /marstube/upload => Upload Video
+
+[images]
+icon => https://i.esdrop.com/d/f/AJpmYimqqn/2Eo1pRopkY.png
+profile => https://i.esdrop.com/d/f/AJpmYimqqn/RXUcK3E1Pa.png
