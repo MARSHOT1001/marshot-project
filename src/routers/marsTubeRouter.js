@@ -5,17 +5,18 @@ import {
   postEdit,
   marstube,
   search,
-  upload,
   watch,
+  getUpload,
+  postUpload,
 } from "../controllers/marsTubeController";
 
 const marsTubeRouter = express.Router();
 
+marsTubeRouter.route("/upload").get(getUpload).post(postUpload);
 marsTubeRouter.get("/", marstube);
-marsTubeRouter.get("/:id(\\d+)", watch);
-marsTubeRouter.route("/:id(\\d+)/edit").get(getEdit).post(postEdit);
-marsTubeRouter.get("/:id(\\d+)/delete", deleteVideo);
+marsTubeRouter.get("/:id[0-9a-f]{24}", watch);
+marsTubeRouter.route("/:id[0-9a-f]{24}/edit").get(getEdit).post(postEdit);
+marsTubeRouter.get("/:id[0-9a-f]{24}/delete", deleteVideo);
 marsTubeRouter.get("/search", search);
-marsTubeRouter.get("/upload", upload);
 
 export default marsTubeRouter;
