@@ -7,6 +7,7 @@ const app = express();
 const logger = morgan("dev");
 
 app.use(logger);
+
 const handleListening = () =>
   console.log(`Server listening on port: ${PORT}🚀`);
 

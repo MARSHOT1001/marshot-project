@@ -1,10 +1,10 @@
 # MARSHOTPROJECT
 
-[globalRouter]
+[rootRouter]
 / => Freedom
 /users => Users
-/talks => MarsTalk
-/videos => MarsTube
+/marstalk => MarsTalk
+/marstube => MarsTube
 /search => Search
 /signup => Sign Up
 /signin => Sign In
@@ -16,14 +16,14 @@
 /users/delete => Delete My Profile
 
 [MarsTalk]
-/talks/:id/friends => See Friends
-/talks/:id/chats => Chats
-/talks/:id/views => Views
-/talks/:id/shopping => Shopping
-/talks/:id/more => More
+/marstalk/:id/friends => See Friends
+/marstalk/:id/chats => Chats
+/marstalk/:id/views => Views
+/marstalk/:id/shopping => Shopping
+/marstalk/:id/more => More
 
 [MarsTube]
-/videos/:id => Watch Video
-/videos/:id/edit => Edit Video
-/videos/:id/delete => Delte Video
-/videos/upload => Upload Video
+/marstube/:id => Watch Video
+/marstube/:id/edit => Edit Video
+/marstube/:id/delete => Delte Video
+/marstube/upload => Upload Video
