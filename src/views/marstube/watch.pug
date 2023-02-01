@@ -2,4 +2,4 @@ extends base.pug
 
 block content 
     h3 #{video.views} #{video.views === 1 ? "view" : "views"}
-    a(href="/marstube/1/edit") Edit Video &rarr;
+    a(href=`/marstube/${video.id}/edit`) Edit Video &rarr;
