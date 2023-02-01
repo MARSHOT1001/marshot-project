@@ -1,1 +1,4 @@
-export const freedom = (req, res) => res.send("Freedom");
+export const freedom = (req, res) => {
+  console.log(req.params);
+  return res.send("Watch");
+};

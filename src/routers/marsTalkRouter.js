@@ -11,10 +11,10 @@ import {
 const marsTalkRouter = express.Router();
 
 marsTalkRouter.get("/", marsTalk);
-marsTalkRouter.get("/:id/friends", friends);
-marsTalkRouter.get("/:id/chats", chats);
-marsTalkRouter.get("/:id/views", views);
-marsTalkRouter.get("/:id/shopping", shopping);
-marsTalkRouter.get("/:id/more", more);
+marsTalkRouter.get("/:id(\\d+)/friends", friends);
+marsTalkRouter.get("/:id(\\d+)/chats", chats);
+marsTalkRouter.get("/:id(\\d+)/views", views);
+marsTalkRouter.get("/:id(\\d+)/shopping", shopping);
+marsTalkRouter.get("/:id(\\d+)/more", more);
 
 export default marsTalkRouter;
