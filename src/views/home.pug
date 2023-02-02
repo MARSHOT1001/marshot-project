@@ -1,18 +1,4 @@
-doctype html 
-html(lang="ko")
-    head
-        include partials/meta.pug
-        include partials/meta-og.pug
-        include partials/meta-twitter.pug
-        include partials/icon.pug
-        block head
-        link(rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css")
-        title #{pageTitle} | Marshot Project
-    body 
-        nav 
-            ul 
-                li 
-                    a(href="/signup") Sign Up
-                li 
-                    a(href="/signin") Sign In
-    include partials/footer.pug
+extends base.pug
+
+
+block content

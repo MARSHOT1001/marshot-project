@@ -11,14 +11,24 @@ html(lang="ko")
     body 
         header 
             h1=pageTitle
-            nav
+            nav 
                 ul 
                     li 
-                        a(href="/marstube") Home
+                        a(href="/") Freedom
+                    if loggedIn
+                        li 
+                            a(href="/Sign out") Sign Out 
+                        li 
+                            a(href="my-profile") #{loggedInUser.username}
+                    else
+                        li
+                            a(href="/signup") Sign Up
+                        li 
+                            a(href="/signin") Sign In
+                    li 
+                        a(href="/search") Search
                     li 
                         a(href="/marstube/upload") Upload Video
-                    li 
-                        a(href="/marstube/search") Search
         main
             block content
     include ../partials/footer.pug
