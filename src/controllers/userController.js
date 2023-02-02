@@ -60,6 +60,8 @@ export const postSignin = async (req, res) => {
       errorMessage: "Wrong password.",
     });
   }
+  req.session.loggedIn = true;
+  req.session.user = user;
   console.log("LOG USER IN! COMMING SOON!");
   return res.redirect("/");
 };
