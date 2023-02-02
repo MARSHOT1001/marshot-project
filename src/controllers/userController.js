@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import User from "../models/User";
 
