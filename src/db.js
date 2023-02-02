@@ -4,6 +4,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/marstube", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+mongoose.set("strictQuery", false);
 
 const db = mongoose.connection;
 
