@@ -71,6 +71,10 @@ export const postEdit = async (req, res) => {
   return res.redirect(`/marstube/${id}`);
 };
 
-export const deleteVideo = (req, res) => res.send("Delete Video");
+export const deleteVideo = async (req, res) => {
+  const { id } = req.params;
+  await Video.findByIdAndDelete(id);
+  return res.redirect("/marstube");
+};
 
 export const search = (req, res) => res.send("Search Videos");

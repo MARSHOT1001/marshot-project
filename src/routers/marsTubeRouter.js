@@ -16,7 +16,7 @@ marsTubeRouter.get("/", marstube);
 marsTubeRouter.get("/:id([0-9a-f]{24})", watch);
 marsTubeRouter.route("/upload").get(getUpload).post(postUpload);
 marsTubeRouter.route("/:id([0-9a-f]{24})/edit").get(getEdit).post(postEdit);
-marsTubeRouter.get("/:id([0-9a-f]{24})/delete", deleteVideo);
+marsTubeRouter.route("/:id([0-9a-f]{24})/delete").get(deleteVideo);
 marsTubeRouter.get("/search", search);
 
 export default marsTubeRouter;
