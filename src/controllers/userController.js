@@ -146,7 +146,21 @@ export const getEdit = (req, res) => {
   });
 };
 
-export const postEdit = (req, res) => res.send("Edit Profile");
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { id },
+    },
+    body: { name, email, username, location },
+  } = req;
+  await User.findByIdAndUpdate(id, {
+    name,
+    email,
+    username,
+    location,
+  });
+  return res.render("user/edit-profile");
+};
 
 export const signout = (req, res) => {
   req.session.destroy();

@@ -7,6 +7,7 @@ import {
   getEdit,
   postEdit,
 } from "../controllers/userController";
+import { protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
 
 const userRouter = express.Router();
 

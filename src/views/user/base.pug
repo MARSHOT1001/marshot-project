@@ -19,7 +19,7 @@ html(lang="ko")
                         li 
                             a(href="/users/edit") Edit Profile
                         li 
-                            a(href="/Sign out") Sign Out 
+                            a(href="/users/signout") Sign Out 
                         li 
                             a(href="my-profile") #{loggedInUser.username}
                     else
@@ -27,10 +27,6 @@ html(lang="ko")
                             a(href="/signup") Sign Up
                         li 
                             a(href="/signin") Sign In
-                    li 
-                        a(href="/search") Search
-                    li 
-                        a(href="/marstube/upload") Upload Video
         main
             block content
     include ../partials/footer.pug
