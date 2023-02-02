@@ -5,20 +5,20 @@ export const getSignup = (req, res) => {
 };
 
 export const postSignup = async (req, res) => {
-  const { name, username, email, password, location } = req.body;
+  const { name, username, email, password, check_password, location } =
+    req.body;
   const pageTitle = "Sign Up";
-  const usernameExists = await User.exists({ username });
-  if (usernameExists) {
-    return res.render("signup", {
-      pageTitle: "Sign Up",
-      errorMessage: "This username is already taken.",
-    });
-  }
-  const emailExists = await User.exists({ email });
-  if (emailExists) {
+  if (password !== check_password) {
     return res.render("signup", {
       pageTitle,
-      errorMessage: "This email is already taken.",
+      errorMessage: "Password confirmation does not match.",
+    });
+  }
+  const exists = await User.exists({ $or: [{ username }, { email }] });
+  if (exists) {
+    return res.render("signup", {
+      pageTitle,
+      errorMessage: "This username/email is already taken.",
     });
   }
   await User.create({
@@ -31,7 +31,7 @@ export const postSignup = async (req, res) => {
   return res.redirect("/signin");
 };
 
-export const signin = (req, res) => res.send("Login");
+export const signin = (req, res) => res.send("Sign In");
 
 export const signout = (req, res) => res.send("Sign Out");
 
