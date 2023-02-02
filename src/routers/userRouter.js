@@ -2,16 +2,16 @@ import express from "express";
 import {
   profile,
   signout,
-  edit,
-  remove,
   startGithubLogin,
   finishGithubLogin,
+  getEdit,
+  postEdit,
 } from "../controllers/userController";
 
 const userRouter = express.Router();
 
 userRouter.get("/signout", signout);
-userRouter.get("/edit", edit);
+userRouter.route("/edit").get(getEdit).post(postEdit);
 userRouter.get("/github/start", startGithubLogin);
 userRouter.get("/github/finish", finishGithubLogin);
 userRouter.get("/:id", profile);

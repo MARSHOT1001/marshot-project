@@ -16,6 +16,8 @@ html(lang="ko")
                         a(href="/") Freedom
                     if loggedIn
                         li 
+                            a(href="/users/edit") Edit Profile 
+                        li 
                             a(href="/users/signout") Sign Out 
                         li 
                             a(href="my-profile") #{loggedInUser.username}
