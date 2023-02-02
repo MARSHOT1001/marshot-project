@@ -12,7 +12,6 @@ const userRouter = express.Router();
 
 userRouter.get("/signout", signout);
 userRouter.get("/edit", edit);
-userRouter.get("/remove", remove);
 userRouter.get("/github/start", startGithubLogin);
 userRouter.get("/github/finish", finishGithubLogin);
 userRouter.get("/:id", profile);

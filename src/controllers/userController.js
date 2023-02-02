@@ -46,7 +46,7 @@ export const getSignin = (req, res) => {
 
 export const postSignin = async (req, res) => {
   const { username, password } = req.body;
-  const pageTitle = "Login";
+  const pageTitle = "Sign In";
   const user = await User.findOne({ username });
   if (!user) {
     return res.status(400).render("signin", {
@@ -70,7 +70,7 @@ export const postSignin = async (req, res) => {
 export const startGithubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
-    client_id: "2a6d762cd6e2614aecd4",
+    client_id: process.env.GH_CLIENT,
     allow_signup: false,
     scope: "read:user user:email",
   };
@@ -88,20 +88,62 @@ export const finishGithubLogin = async (req, res) => {
   };
   const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
-  const data = await fetch(finalUrl, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-  const json = await data.json();
-  console.log(json);
+  const tokenRequest = await (
+    await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+  ).json();
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
+    const apiUrl = "https://api.github.com";
+    const userData = await (
+      await fetch(`${apiUrl}/user`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+    ).json();
+    const emailData = await (
+      await fetch(`${apiUrl}/user/emails`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+    ).json();
+    const emailObj = emailData.find(
+      (email) => email.primary === true && email.verified === true
+    );
+    if (!emailObj) {
+      return res.redirect("/signin");
+    }
+    let user = await User.findOne({ email: emailObj.email });
+    if (!user) {
+      user = User.create({
+        avatarUrl: userData.avatar_url,
+        name: userData.name,
+        username: userData.login,
+        email: emailObj.email,
+        password: "",
+        socialOnly: true,
+        location: userData.location,
+      });
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
+  } else {
+    return res.redirect("/signin");
+  }
 };
-
-export const signout = (req, res) => res.send("Sign Out");
-
-export const profile = (req, res) => res.send("Your Profile");
 
 export const edit = (req, res) => res.send("Edit Profile");
 
-export const remove = (req, res) => res.send("Remove Profile");
+export const signout = (req, res) => {
+  req.session.destroy();
+  return res.redirect("/");
+};
+
+export const profile = (req, res) => res.send("Your Profile");
