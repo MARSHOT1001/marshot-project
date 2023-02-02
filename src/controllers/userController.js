@@ -149,11 +149,11 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { id },
+      user: { _id },
     },
     body: { name, email, username, location },
   } = req;
-  await User.findByIdAndUpdate(id, {
+  await User.findByIdAndUpdate(_id, {
     name,
     email,
     username,
