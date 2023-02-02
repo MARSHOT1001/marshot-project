@@ -22,7 +22,7 @@ export const postUpload = async (req, res) => {
     });
     return res.redirect("/marstube");
   } catch (error) {
-    return res.render("marstube/upload", {
+    return res.status(400).render("marstube/upload", {
       pageTitle: "Upload Video",
       errorMessage: error._message,
     });
@@ -45,7 +45,7 @@ export const getEdit = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id);
   if (!video) {
-    return res.render("marstube/404", {
+    return res.status(404).render("marstube/404", {
       pageTitle: `Video not found.`,
     });
   }
@@ -60,7 +60,9 @@ export const postEdit = async (req, res) => {
   const { title, description, hashtags } = req.body;
   const video = await Video.findById(id);
   if (!video) {
-    return res.render("marstube/404", { pageTitle: "Video not found." });
+    return res
+      .status(404)
+      .render("marstube/404", { pageTitle: "Video not found." });
   }
   await Video.findByIdAndUpdate(id, {
     title,
