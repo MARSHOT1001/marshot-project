@@ -77,4 +77,13 @@ export const deleteVideo = async (req, res) => {
   return res.redirect("/marstube");
 };
 
-export const search = (req, res) => res.send("Search Videos");
+export const search = async (req, res) => {
+  const { keyword } = req.query;
+  let videos = [];
+  if (keyword) {
+    videos = await Video.find({
+      title: { $regex: new RegExp(`${keyword}$`, "i") },
+    });
+  }
+  return res.render("marstube/search", { pageTitle: "Search", videos });
+};
