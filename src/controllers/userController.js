@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import User from "../models/User";
-import { google } from "googleapis";
+import { uploadFiles } from "../middlewares";
 
 export const getSignup = (req, res) => {
   res.render("signup", { pageTitle: "Sign Up" });
@@ -212,8 +212,9 @@ export const postEdit = async (req, res) => {
       user: { _id },
     },
     body: { name, email, username, location },
+    file,
   } = req;
-
+  console.log(file);
   const pageTitle = "Edit Your Profile";
 
   const sessionEmail = req.session.user.email;
