@@ -212,7 +212,7 @@ export const postEdit = async (req, res) => {
       user: { _id },
     },
     body: { name, email, username, location },
-    file,
+    file: { path },
   } = req;
   console.log(file);
   const pageTitle = "Edit Your Profile";
@@ -243,6 +243,7 @@ export const postEdit = async (req, res) => {
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: path,
       name,
       email,
       username,
