@@ -19,9 +19,10 @@ import {
 
 const userRouter = express.Router();
 
-userRouter.get("/signout", signout);
+userRouter.get("/signout", protectorMiddleware, signout);
 userRouter
   .route("/edit")
+  .all(protectorMiddleware)
   .get(getEdit)
   .post(uploadFiles.single("avatar"), postEdit);
 userRouter
@@ -29,10 +30,10 @@ userRouter
   .all(protectorMiddleware)
   .get(getChangePassword)
   .post(postChangePassword);
-userRouter.get("/github/start", startGithubLogin);
-userRouter.get("/github/finish", finishGithubLogin);
-userRouter.get("/google/start", startGoogleLogin);
-userRouter.get("/google/finish", finishGoogleLogin);
+userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
+userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
+userRouter.get("/google/start", publicOnlyMiddleware, startGoogleLogin);
+userRouter.get("/google/finish", publicOnlyMiddleware, finishGoogleLogin);
 userRouter.get("/:id", profile);
 
 export default userRouter;

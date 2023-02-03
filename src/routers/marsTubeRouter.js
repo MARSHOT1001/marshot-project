@@ -10,7 +10,7 @@ import {
   getUpload,
   postUpload,
 } from "../controllers/marsTubeController";
-import { publicOnlyMiddleware } from "../middlewares";
+import { protectorMiddleware } from "../middlewares";
 
 const marsTubeRouter = express.Router();
 
@@ -18,17 +18,17 @@ marsTubeRouter.get("/", marstube);
 marsTubeRouter.get("/:id([0-9a-f]{24})", watch);
 marsTubeRouter
   .route("/upload")
-  .all(publicOnlyMiddleware)
+  .all(protectorMiddleware)
   .get(getUpload)
   .post(postUpload);
 marsTubeRouter
   .route("/:id([0-9a-f]{24})/edit")
-  .all(publicOnlyMiddleware)
+  .all(protectorMiddleware)
   .get(getEdit)
   .post(postEdit);
 marsTubeRouter
   .route("/:id([0-9a-f]{24})/delete")
-  .all(publicOnlyMiddleware)
+  .all(protectorMiddleware)
   .get(deleteVideo);
 marsTubeRouter.get("/search", search);
 
