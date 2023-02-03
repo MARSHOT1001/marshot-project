@@ -11,12 +11,19 @@ import {
   startGoogleLogin,
   finishGoogleLogin,
 } from "../controllers/userController";
-import { protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
+import {
+  protectorMiddleware,
+  publicOnlyMiddleware,
+  uploadFiles,
+} from "../middlewares";
 
 const userRouter = express.Router();
 
 userRouter.get("/signout", signout);
-userRouter.route("/edit").get(getEdit).post(postEdit);
+userRouter
+  .route("/edit")
+  .get(getEdit)
+  .post(uploadFiles.single("avatar"), postEdit);
 userRouter
   .route("/change-password")
   .all(protectorMiddleware)

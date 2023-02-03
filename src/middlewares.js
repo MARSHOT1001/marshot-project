@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const localsMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
   res.locals.siteName = "MarsTube";
@@ -27,3 +29,5 @@ export const getChangePassword = (req, res) => {
   }
   return res.render("user/change-password", { pageTitle: "Change Password" });
 };
+
+export const uploadFiles = multer({ dest: "uploads/" });
