@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import User from "../models/User";
+import { google } from "googleapis";
 
 export const getSignup = (req, res) => {
   res.render("signup", { pageTitle: "Sign Up" });
@@ -139,9 +140,67 @@ export const finishGithubLogin = async (req, res) => {
   }
 };
 
-export const startGoogleLogin = (req, res) => {};
+export const startGoogleLogin = (req, res) => {
+  const baseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+  const config = {
+    client_id: process.env.GOOGLE_CLIENT,
+    response_type: "code",
+    scope: "openid profile email",
+    redirect_uri: process.env.REDIRECT_URL,
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  return res.redirect(finalUrl);
+};
 
-export const finishGoogleLogin = (req, res) => {};
+export const finishGoogleLogin = async (req, res) => {
+  const baseUrl = "https://oauth2.googleapis.com/token";
+  const config = {
+    client_id: process.env.GOOGLE_CLIENT,
+    client_secret: process.env.GOOGLE_SECRET,
+    code: req.query.code,
+    redirect_uri: process.env.REDIRECT_URL,
+    grant_type: "authorization_code",
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  const tokenRequest = await (
+    await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+  ).json();
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
+    const apiUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
+    const userData = await (
+      await fetch(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    ).json();
+    let user = await User.findOne({ email: userData.email });
+    if (!user) {
+      user = User.create({
+        avatarUrl: userData.picture,
+        name: userData.name,
+        username: userData.name,
+        email: userData.email,
+        password: "",
+        socialOnly: true,
+        location: userData.locale,
+      });
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
+  } else {
+    return res.redirect("/signin");
+  }
+};
 
 export const getEdit = (req, res) => {
   return res.render("user/edit-profile", { pageTitle: "Edit Profile" });
