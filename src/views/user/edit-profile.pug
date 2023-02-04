@@ -1,9 +1,10 @@
 extends base
 
 block content 
+    img(src="/uploads" + loggedInUser.avatarUrl, height="100", width="100")
     form(method="POST", enctype="multipart/form-data")
         label(for="avatar") Avatar
-        input(id="avatar", type="file", name="avatar", accept=".png, .jpg, .jepg")
+        input(id="avatar", type="file", name="avatar", accept="image/*")
         input(type="text", name="name", placeholder="Name", value=loggedInUser.name, required)
         input(type="email", name="email", placeholder="Email" value=loggedInUser.email, required)
         input(type="text", name="username", placeholder="Username" value=loggedInUser.username, required)
