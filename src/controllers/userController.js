@@ -209,10 +209,10 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, avatarUrl },
     },
     body: { name, email, username, location },
-    file: { path },
+    file,
   } = req;
   console.log(file);
   const pageTitle = "Edit Your Profile";
@@ -243,8 +243,7 @@ export const postEdit = async (req, res) => {
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: path,
-      name,
+      avatarUrl: file ? file.path : name,
       email,
       username,
       location,
