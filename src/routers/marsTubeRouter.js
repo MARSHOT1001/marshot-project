@@ -10,7 +10,7 @@ import {
   getUpload,
   postUpload,
 } from "../controllers/marsTubeController";
-import { protectorMiddleware } from "../middlewares";
+import { protectorMiddleware, videoUpload } from "../middlewares";
 
 const marsTubeRouter = express.Router();
 
@@ -20,7 +20,7 @@ marsTubeRouter
   .route("/upload")
   .all(protectorMiddleware)
   .get(getUpload)
-  .post(postUpload);
+  .post(videoUpload.single("video"), postUpload);
 marsTubeRouter
   .route("/:id([0-9a-f]{24})/edit")
   .all(protectorMiddleware)

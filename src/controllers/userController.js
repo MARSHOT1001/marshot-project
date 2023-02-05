@@ -214,7 +214,6 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-  console.log(file);
   const pageTitle = "Edit Your Profile";
 
   const sessionEmail = req.session.user.email;
@@ -251,7 +250,6 @@ export const postEdit = async (req, res) => {
     { new: true }
   );
   req.session.user = updatedUser;
-  console.log(updatedUser);
   return res.redirect("/users/edit");
 };
 
@@ -294,4 +292,16 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/users/signout");
 };
 
-export const profile = (req, res) => res.send("Your Profile");
+export const profile = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) {
+    return res
+      .status(404)
+      .render("marstube/404", { pageTitle: "User not found." });
+  }
+  return res.render("user/profile", {
+    pageTitle: user.username,
+    user,
+  });
+};
