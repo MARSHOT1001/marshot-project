@@ -53,11 +53,18 @@ export const watch = async (req, res) => {
 
 export const getEdit = async (req, res) => {
   const { id } = req.params;
+  const {
+    user: { _id },
+  } = req.session;
   const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render("marstube/404", {
       pageTitle: `Video not found.`,
     });
+  }
+  console.log(typeof video.owner, typeof _id);
+  if (video.owner !== _id) {
+    return res.status(403).redirect("/");
   }
   return res.render("marstube/edit", {
     pageTitle: `Edit: ${video.title}`,
