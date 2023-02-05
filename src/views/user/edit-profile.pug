@@ -1,7 +1,7 @@
 extends base
 
 block content 
-    img(src="/uploads" + loggedInUser.avatarUrl, height="100", width="100")
+    img(src="/" + loggedInUser.avatarUrl, height="100", width="100")
     form(method="POST", enctype="multipart/form-data")
         label(for="avatar") Avatar
         input(id="avatar", type="file", name="avatar", accept="image/*")

@@ -30,7 +30,7 @@ app.use(
 
 app.use(localsMiddleware);
 app.use("/", rootRouter);
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("avatars"));
 app.use("/users", userRouter);
 app.use("/marstalk", marsTalkRouter);
 app.use("/marstube", marsTubeRouter);

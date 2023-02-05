@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import User from "../models/User";
+import Video from "../models/Video";
 import { uploadFiles } from "../middlewares";
 
 export const getSignup = (req, res) => {
@@ -242,7 +243,7 @@ export const postEdit = async (req, res) => {
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? `/${file.path}` : avatarUrl,
+      avatarUrl: file ? `${file.path}` : avatarUrl,
       email,
       username,
       location,
@@ -294,12 +295,15 @@ export const postChangePassword = async (req, res) => {
 
 export const profile = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate("videos");
+  console.log(user);
   if (!user) {
     return res
       .status(404)
       .render("marstube/404", { pageTitle: "User not found." });
   }
+  const videos = await Video.find({ owner: user._id });
+  console.log(videos);
   return res.render("user/profile", {
     pageTitle: user.username,
     user,
