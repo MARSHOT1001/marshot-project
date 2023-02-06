@@ -1,8 +1,7 @@
-import fetch from "node-fetch";
-import bcrypt from "bcrypt";
 import User from "../models/User";
 import Video from "../models/Video";
-import { uploadFiles } from "../middlewares";
+import fetch from "node-fetch";
+import bcrypt from "bcrypt";
 
 export const getSignup = (req, res) => {
   res.render("signup", { pageTitle: "Sign Up" });
@@ -300,7 +299,7 @@ export const profile = async (req, res) => {
   if (!user) {
     return res
       .status(404)
-      .render("marstube/404", { pageTitle: "User not found." });
+      .render("404", { pageTitle: "User not found." });
   }
   const videos = await Video.find({ owner: user._id });
   console.log(videos);

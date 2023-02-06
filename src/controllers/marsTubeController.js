@@ -9,6 +9,20 @@ export const marstube = async (req, res) => {
   });
 };
 
+export const watch = async (req, res) => {
+  const { id } = req.params;
+  const video = await Video.findById(id).populate("owner");
+  const owner = await User.findById(video.owner);
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "Video not found" });
+  }
+  return res.render("marstube/watch", {
+    pageTitle: video.title,
+    video,
+    owner,
+  });
+};
+
 export const getUpload = (req, res) => {
   res.render("marstube/upload", { pageTitle: "Upload" });
 };
@@ -32,23 +46,12 @@ export const postUpload = async (req, res) => {
     user.save();
     return res.redirect("/marstube");
   } catch (error) {
+    console.log(error);
     return res.status(400).render("marstube/upload", {
       pageTitle: "Upload Video",
       errorMessage: error._message,
     });
   }
-};
-
-export const watch = async (req, res) => {
-  const { id } = req.params;
-  const video = await Video.findById(id).populate("owner");
-  if (!video) {
-    return res.render("marstube/404", { pageTitle: "Video not found" });
-  }
-  return res.render("marstube/watch", {
-    pageTitle: video.title,
-    video,
-  });
 };
 
 export const getEdit = async (req, res) => {
@@ -58,12 +61,11 @@ export const getEdit = async (req, res) => {
   } = req.session;
   const video = await Video.findById(id);
   if (!video) {
-    return res.status(404).render("marstube/404", {
+    return res.status(404).render("404", {
       pageTitle: `Video not found.`,
     });
   }
-  console.log(typeof video.owner, typeof _id);
-  if (video.owner !== _id) {
+  if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
   }
   return res.render("marstube/edit", {
@@ -73,13 +75,17 @@ export const getEdit = async (req, res) => {
 };
 
 export const postEdit = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
   const video = await Video.findById(id);
   if (!video) {
-    return res
-      .status(404)
-      .render("marstube/404", { pageTitle: "Video not found." });
+    return res.status(404).render("404", { pageTitle: "Video not found." });
+  }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/marstube");
   }
   await Video.findByIdAndUpdate(id, {
     title,
@@ -92,6 +98,16 @@ export const postEdit = async (req, res) => {
 
 export const deleteVideo = async (req, res) => {
   const { id } = req.params;
+  const {
+    user: { _id },
+  } = req.session;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "Video not found." });
+  }
+  if (Stromg(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/marstube");
+  }
   await Video.findByIdAndDelete(id);
   return res.redirect("/marstube");
 };

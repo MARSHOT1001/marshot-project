@@ -17,11 +17,6 @@ const marsTubeRouter = express.Router();
 marsTubeRouter.get("/", marstube);
 marsTubeRouter.get("/:id([0-9a-f]{24})", watch);
 marsTubeRouter
-  .route("/upload")
-  .all(protectorMiddleware)
-  .get(getUpload)
-  .post(videoUpload.single("video"), postUpload);
-marsTubeRouter
   .route("/:id([0-9a-f]{24})/edit")
   .all(protectorMiddleware)
   .get(getEdit)
@@ -30,6 +25,11 @@ marsTubeRouter
   .route("/:id([0-9a-f]{24})/delete")
   .all(protectorMiddleware)
   .get(deleteVideo);
+marsTubeRouter
+  .route("/upload")
+  .all(protectorMiddleware)
+  .get(getUpload)
+  .post(videoUpload.single("video"), postUpload);
 marsTubeRouter.get("/search", search);
 
 export default marsTubeRouter;
