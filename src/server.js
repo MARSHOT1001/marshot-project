@@ -29,8 +29,9 @@ app.use(
 );
 
 app.use(localsMiddleware);
+app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("assets"));
 app.use("/", rootRouter);
-app.use("/uploads", express.static("avatars"));
 app.use("/users", userRouter);
 app.use("/marstalk", marsTalkRouter);
 app.use("/marstube", marsTubeRouter);
